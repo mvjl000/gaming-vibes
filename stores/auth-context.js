@@ -15,15 +15,18 @@ const AuthProvider = ({ children }) => {
     netlifyIdentity.on('login', (user) => {
       setUser(user);
       netlifyIdentity.close();
-      console.log('LOGGIN IN');
     });
 
     netlifyIdentity.on('logout', () => {
       setUser(null);
-      console.log('LOGGIN OUT');
     });
 
     netlifyIdentity.init();
+
+    return () => {
+      netlifyIdentity.off('login');
+      netlifyIdentity.off('logout');
+    };
   }, []);
 
   const login = () => {
